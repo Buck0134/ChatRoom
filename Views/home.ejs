@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>ChatRoom</title>
+
+	<style>
+		h2 {
+			margin: 12px 0px 0px 0px;
+			padding: 0px;
+		}
+
+		p {
+			margin: 0px;
+			padding: 0px;
+		}
+	</style>
+</head>
+	
+<body>
+	<h1>ChatRoom</h1>
+	<% data.forEach(element=> { %>
+	<h2><%= element.username %></h2>
+	
+<p>with <%= element.password %></p>
+
+	<% }) %>
+
+	<h1>Add Message</h1>
+
+	<form action="/" method="post">
+		<input type="text" placeholder="User Name"
+			name="userName">
+		<input type="text" placeholder="Message"
+			name="userMessage">
+		<button type="submit">Send</button>
+	</form>
+</body>
+
+</html>
