@@ -1,13 +1,46 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet"href="/css/styles.css">
+  </head>
+  <head>
     <title>Dashboard</title>
   </head>
   <body>
-    <h1>Welcome, <%= user.username %>!</h1>
-    <p>Username: <%= user.username %></p>
+    <h1>Welcome to the ChatRoom, <%= user.username %>!</h1>
 
-    <!-- Post Area -->
+    <!-- Posts Area -->
+    <!-- <div class="scrollable-div">
+      <% posts.forEach((post) => { %>
+        <div class="box">
+          <p><%= post.post_user %></p>
+          <p>posted: <%= post.post_content %></p>
+          <p>at: <%= post.posted_at %></p>
+        </div>
+      <% }); %>
+    </div> -->
+    <!-- Container directing to script where auto update is functioning -->
+    <!-- <div id="posts-container" class="scrollable-div"></div> -->
+
+    <!-- New way -->
+    <!-- Posts Area -->
+      <div id="posts-container" class="scrollable-div">
+        <!-- <% posts.forEach((post) => { %>
+        <div class="post">
+            <h2>
+              <%= post.post_user %>:
+            </h2>
+            <p>
+              <%= post.post_content %>
+            </p>
+            <p>at 
+              <%= post.posted_at %>
+            </p>
+        </div>
+        <% }); %> -->
+    </div>
+  
+
 
     <!-- Posting Area -->
     
@@ -15,6 +48,44 @@
     <form action="/logout" method="post">
       <input type="submit" value="Logout">
     </form>
+
+    <!-- Scrpit area to process auto update without refresh the code -->
+    <script>
+      // Define a local list to store the ids of rendered posts
+      let renderedPosts = [];
+
+      const fetchNewPosts = async () => {
+        const response = await fetch('/api/posts');
+        const newPosts = await response.json();
+
+        newPosts.forEach(post => {
+          // Only render the post if its id is not in the renderedPosts list
+          if (!renderedPosts.includes(post.id)) {
+            const postElement = document.createElement('div');
+            postElement.classList.add('post');
+
+            // Create a new date object from the post's timestamp
+            const postDate = new Date(post.posted_at);
+
+            // Format the date and time
+            const formattedDate = postDate.toLocaleDateString(); // e.g., "MM/DD/YYYY"
+            const formattedTime = postDate.toLocaleTimeString(); // e.g., "HH:MM:SS AM/PM"
+            
+            // formatting the inner HTML
+            postElement.innerHTML = `<h2>${post.post_user}:</h2><p>${post.post_content}</p><p>at ${formattedDate} ${formattedTime}</p>`;
+            document.getElementById('posts-container').appendChild(postElement);
+
+            // Add the id to the renderedPosts list
+            renderedPosts.push(post.id);
+          }
+        });
+      }
+
+      fetchNewPosts(); // Fetch posts immediately after page load
+      setInterval(fetchNewPosts, 1000); // Auto Update every 1 second
+
+
+    </script>
 
   </body>
 </html>

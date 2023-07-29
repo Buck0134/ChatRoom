@@ -34,7 +34,25 @@ async function insertUserIntoDatabase(username, password) {
   }
 }
 
+// Function to fetch posts from the database
+async function fetchPostsFromDatabase() {
+  const conString = "postgres://mdkmnhui:bJXnvjYj8SwU_Tnc-h8b7B6nrfVjy5-8@heffalump.db.elephantsql.com/mdkmnhui";
+  const client = new pg.Client(conString);
+
+  try {
+    await client.connect();
+    const result = await client.query('SELECT * FROM posts ORDER BY posted_at ASC;');
+    return result.rows;
+  } catch (err) {
+    console.error('Error fetching posts from the database:', err);
+    return [];
+  } finally {
+    client.end();
+  }
+}
+
 module.exports = {
   fetchUsersFromDatabase,
-  insertUserIntoDatabase
+  insertUserIntoDatabase,
+  fetchPostsFromDatabase
 };

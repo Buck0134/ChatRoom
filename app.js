@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 
 const db = require('./db'); // database related processes are moved to db.js
 
+app.use(express.static('public')); // required for styling
+
 // required middleware to establish current user
 const session = require('express-session');
 
@@ -27,6 +29,9 @@ users = db.fetchUsersFromDatabase()
   .then(users => console.log(users))
   .catch(err => console.error(err));
 
+posts = db.fetchPostsFromDatabase()
+.then(posts => console.log(posts))
+.catch(err => console.error(err));
 
 // login page route
 app.get('/', async (req, res) => {
@@ -46,11 +51,17 @@ app.get('/signup', (req, res) => {
 });
 
 // Home page route
-app.get('/home', (req, res) => {
-  if (req.session.user) {
-    res.render('home', { user: req.session.user });
+app.get('/home', async (req, res) => {
+  if(req.session.user){
+    try {
+      posts = await db.fetchPostsFromDatabase();
+      console.log(posts);
+      res.render('home', { user: req.session.user, posts});
+    } catch (err) {
+      console.error(err);
+    }
   }else{
-    res.render('home', { message: req.query.message }); // enabling message passing
+    res.render('/',{message: "Please Log-in"})
   }
 });
 
@@ -92,6 +103,25 @@ app.post('/logout', (req, res) => {
     res.redirect('/'); // After logout, redirect the user to the login page
   });
 });
+
+// Post route
+// Auto update posts without refresh
+app.get('/get-posts', async (req, res) => {
+  try {
+    const posts = await db.fetchPostsFromDatabase();
+    res.json(posts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error fetching posts from the database');
+  }
+});
+
+// API endpoint for posts
+app.get('/api/posts', async (req, res) => {
+  const newPosts = await db.fetchPostsFromDatabase(); // this function needs to be implemented in your db.js file
+  res.json(newPosts);
+});
+
 
 
 

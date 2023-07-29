@@ -1,0 +1,16 @@
+.box {
+    width: 200px;
+    height: 200px;
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+}
+
+.scrollable-div {
+    width: 400px; /* or any width */
+    height: 300px; /* or any height */
+    overflow: auto; /* Enable scrolling */
+    border: 1px solid black; /* Optional: add a border */
+    padding: 10px; /* Optional: add padding */
+  }
+  
