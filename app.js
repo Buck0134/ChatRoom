@@ -1,72 +1,73 @@
-// Installing depedendcies
-
 const express = require('express');
 const app = express();
+const port = 3000;
+const bodyParser = require('body-parser');
 
-var pg = require('pg');
-//or native libpq bindings
-// var pg = require('pg').native
+const db = require('./db'); // database related processes are moved to db.js
 
-let users = [];
+// Set EJS as the view engine
+app.set('view engine', 'ejs');
+// Parse URL-encoded bodies (as sent by HTML forms)
+app.use(bodyParser.urlencoded({ extended: false }));
 
-var conString = "postgres://mdkmnhui:bJXnvjYj8SwU_Tnc-h8b7B6nrfVjy5-8@heffalump.db.elephantsql.com/mdkmnhui" //Can be found in the Details page
-var client = new pg.Client(conString);
-client.connect(function(err) {
-  if(err) {
-    return console.error('could not connect to postgres', err);
-  }
-  client.query('SELECT * FROM users;', function(err, result) {
-    if(err) {
-      return console.error('error running query', err);
-    }
-    users = result.rows;
+let users = []
+
+users = db.fetchUsersFromDatabase()
+  .then(users => console.log(users))
+  .catch(err => console.error(err));
+
+
+// login page route
+app.get('/', async (req, res) => {
+  // Fetch users from the database
+  try {
+    users = await db.fetchUsersFromDatabase();
     console.log(users);
-    client.end();
-  });
+    res.render('login', { data: users, message: req.query.message }); // Pass the 'data' and 'message' variables to the EJS template
+  } catch (err) {
+    console.error(err);
+  }
 });
 
+// Sign-up page route
+app.get('/signup', (req, res) => {
+  res.render('signup');
+});
 
-// creating users
-// TO DO: fetching user data from database
+// Home page route
+app.get('/home', (req, res) => {
+  res.render('home', { message: req.query.message }); // enabling message passing
+});
 
+// Register new user
+app.post('/signup', async (req, res) => {
+  const { username, password } = req.body;
+  // users.push({ username, password });
+  // updating the database after new user signing up
+  try {
+    await db.insertUserIntoDatabase(username, password);
+    console.log('New user inserted successfully');
+    // updating the user list
+    users = await db.fetchUsersFromDatabase();
+    res.redirect(`/?message=Thank you for registering ${username}`);
+  } catch (err) {
+    console.error(err);
+  }
+});
 
-app.set('view engine', 'ejs');
+// Login route - Handle login form submission
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  const user = users.find((user) => user.username === username && user.password === password);
+  if (user) {
+    // Successful login, redirect to a dashboard page or welcome page
+    res.redirect(`/home?message=${user.username}`);
+  } else {
+    res.redirect('/?message=Invalid username or password. Please try again.');
+  }
+});
 
-// for user input
-const bodyParser = require('body-parser')
-app.use( bodyParser.json() );      
-app.use(bodyParser.urlencoded({    
-     extended: true
-}))
-
-
-// sending variables to the express view page
-// app.get("/", (req, res) => {
-//     res.render("home", { variableName: "Bucky's Chat Room" })
-// })
-
-app.get("/", function (req, res) {
-    res.render("home", {
-        data: users
-    })
-})
-
-app.post("/", (req, res) => {
-    const inputUserName = req.body.userName
-    const inputUserMessage = req.body.userMessage
-  
-    users.push({
-        userName: inputUserName,
-        userMessage: inputUserMessage,
-    })
-  
-    res.render("home", {
-        data: users
-    })
-})
- 
-
-// start the app
-app.listen(3000, (req, res) => {
-    console.log("App is running on port 3000")
-})
+// Start the server
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
