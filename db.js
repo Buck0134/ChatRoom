@@ -22,7 +22,6 @@ async function fetchUsersFromDatabase() {
 async function insertUserIntoDatabase(username, password) {
   const conString = "postgres://mdkmnhui:bJXnvjYj8SwU_Tnc-h8b7B6nrfVjy5-8@heffalump.db.elephantsql.com/mdkmnhui";
   const client = new pg.Client(conString);
-
   try {
     await client.connect();
     await client.query('INSERT INTO users (username, password) VALUES ($1, $2);', [username, password]);
@@ -51,8 +50,25 @@ async function fetchPostsFromDatabase() {
   }
 }
 
+// Function to insert a new post to the database
+async function insertPostIntoDatabase(post_user, post_content) {
+  const conString = "postgres://mdkmnhui:bJXnvjYj8SwU_Tnc-h8b7B6nrfVjy5-8@heffalump.db.elephantsql.com/mdkmnhui";
+  const client = new pg.Client(conString);
+  try {
+    await client.connect();
+    const result = await client.query('INSERT INTO posts (post_user, post_content) VALUES ($1, $2);', [post_user, post_content]);
+    return result.rows;
+  } catch (err) {
+    console.error('Error inserting user into the database:', err);
+    return [];
+  } finally {
+    client.end();
+  }
+}
+
 module.exports = {
   fetchUsersFromDatabase,
   insertUserIntoDatabase,
-  fetchPostsFromDatabase
+  fetchPostsFromDatabase,
+  insertPostIntoDatabase
 };

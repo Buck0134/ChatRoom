@@ -81,6 +81,22 @@ app.post('/signup', async (req, res) => {
   }
 });
 
+// Home Page Route to insert new posts
+app.post('/post', async (req, res) => {
+  const { post_content } = req.body;
+  let userString = JSON.stringify(req.session.user.username);
+  console.log(userString)
+  try {
+    await db.insertPostIntoDatabase('Bucky', post_content);
+    console.log('New post inserted successfully');
+    res.json({ message: 'Post submitted successfully' }); // send a JSON response
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error occurred' }); // send an error message if something went wrong
+  }
+});
+
+
 // Login route - Handle login form submission
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
