@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html>
-    <% if (message) { %>
-        <div><%=message %></div>
-      <% } %>
+  <head>
+    <title>Dashboard</title>
+  </head>
+  <body>
+    <h1>Welcome, <%= user.username %>!</h1>
+    <p>Username: <%= user.username %></p>
+
+    <!-- Post Area -->
+
+    <!-- Posting Area -->
+    
+    <!-- Logout Button -->
+    <form action="/logout" method="post">
+      <input type="submit" value="Logout">
+    </form>
+
+  </body>
 </html>

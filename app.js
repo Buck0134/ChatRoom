@@ -5,6 +5,17 @@ const bodyParser = require('body-parser');
 
 const db = require('./db'); // database related processes are moved to db.js
 
+// required middleware to establish current user
+const session = require('express-session');
+
+app.use(session({
+  secret: 'Otaly2022',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Make sure to change this to true and provide a secure https connection in a production environment
+}));
+
+
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
 // Parse URL-encoded bodies (as sent by HTML forms)
@@ -36,7 +47,11 @@ app.get('/signup', (req, res) => {
 
 // Home page route
 app.get('/home', (req, res) => {
-  res.render('home', { message: req.query.message }); // enabling message passing
+  if (req.session.user) {
+    res.render('home', { user: req.session.user });
+  }else{
+    res.render('home', { message: req.query.message }); // enabling message passing
+  }
 });
 
 // Register new user
@@ -61,11 +76,24 @@ app.post('/login', (req, res) => {
   const user = users.find((user) => user.username === username && user.password === password);
   if (user) {
     // Successful login, redirect to a dashboard page or welcome page
-    res.redirect(`/home?message=${user.username}`);
+    req.session.user = user; // Store user id in session
+    res.redirect(`/home`);
   } else {
     res.redirect('/?message=Invalid username or password. Please try again.');
   }
 });
+
+// Logout route - Handle logout
+app.post('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if(err) {
+      return console.log(err);
+    }
+    res.redirect('/'); // After logout, redirect the user to the login page
+  });
+});
+
+
 
 // Start the server
 app.listen(port, () => {
