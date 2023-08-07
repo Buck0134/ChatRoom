@@ -7,10 +7,51 @@
 }
 
 .scrollable-div {
-    width: 400px; /* or any width */
-    height: 300px; /* or any height */
+    width: 400px;
+    height: 300px;
     overflow: auto; /* Enable scrolling */
-    border: 1px solid black; /* Optional: add a border */
-    padding: 10px; /* Optional: add padding */
-  }
-  
+    border: 1px solid black;
+    padding: 10px;
+    margin: 0 auto; /* Center horizontally */
+}
+
+#parent-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items */
+    justify-content: center; /* Center items */
+    height: 100vh;
+    width: 100vw;
+}
+
+#button-row {
+    display: flex;
+    justify-content: center; /* Center buttons horizontally */
+    gap: 10px; /* Space between buttons */
+    margin-top: 10px; /* Space above the buttons */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0; /* light gray */
+    height: 100vh;
+}
+
+#parent-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center; 
+    height: 100vh;
+    width: 100vw;
+}
+
+#scrollButton {
+    margin-top: auto;
+}
+

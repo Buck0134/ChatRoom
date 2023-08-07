@@ -3,13 +3,19 @@ const app = express();
 const port = 3000;
 const bodyParser = require('body-parser');
 
-const db = require('./db'); // database related processes are moved to db.js
+// database related processes are moved to db.js
+const db = require('./db');
 
-app.use(express.static('public')); // required for styling
+// required for styling
+app.use(express.static('public'));
 
 // required middleware to establish current user
 const session = require('express-session');
 
+// required middleware to process json format between client and server
+app.use(express.json());
+
+// TO DO: secret key etc
 app.use(session({
   secret: 'Otaly2022',
   resave: false,
@@ -82,14 +88,12 @@ app.post('/signup', async (req, res) => {
 });
 
 // Home Page Route to insert new posts
-app.post('/post', async (req, res) => {
-  const { post_content } = req.body;
-  let userString = JSON.stringify(req.session.user.username);
-  console.log(userString)
+app.post('/posting', async (req, res) => {
+  const { post_user, post_content } = req.body;
   try {
-    await db.insertPostIntoDatabase('Bucky', post_content);
+    await db.insertPostIntoDatabase(post_user, post_content);
     console.log('New post inserted successfully');
-    res.json({ message: 'Post submitted successfully' }); // send a JSON response
+    res.json({ message: 'Post submitted successfully' }); // send a JSON response to client
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Error occurred' }); // send an error message if something went wrong
@@ -122,15 +126,16 @@ app.post('/logout', (req, res) => {
 
 // Post route
 // Auto update posts without refresh
-app.get('/get-posts', async (req, res) => {
-  try {
-    const posts = await db.fetchPostsFromDatabase();
-    res.json(posts);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Error fetching posts from the database');
-  }
-});
+// An old way to perform auto-update
+// app.get('/get-posts', async (req, res) => {
+//   try {
+//     const posts = await db.fetchPostsFromDatabase();
+//     res.json(posts);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).send('Error fetching posts from the database');
+//   }
+// });
 
 // API endpoint for posts
 app.get('/api/posts', async (req, res) => {
