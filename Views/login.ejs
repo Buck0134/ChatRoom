@@ -2,23 +2,27 @@
 <html>
 
 <head>
-  <title>Login Page</title>
+    <title>Login Page</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
-<% if (message) { %>
-	<div><%= message %></div>
-  <% } %>
+
 <body>
-  <h1>Login</h1>
-  <form action="/login" method="post">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required>
-    <br>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
-    <br>
-    <button type="submit">Log In</button>
-  </form>
-  <p>Don't have an account? <a href="/signup">Sign up here</a>.</p>
+    <div class="center-container">
+        <% if (message) { %>
+            <div><%= message %></div>
+        <% } %>
+        <h1>Login</h1>
+        <form action="/login" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <br>
+            <button type="submit">Log In</button>
+        </form>
+        <p>Don't have an account? <a href="/signup">Sign up here</a>.</p>
+    </div>
 </body>
 
 </html>

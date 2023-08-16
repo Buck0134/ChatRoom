@@ -1,34 +1,41 @@
-.box {
-    width: 200px;
-    height: 200px;
-    border: 1px solid black;
-    padding: 10px;
-    margin: 10px;
-}
-
 .scrollable-div {
     width: 400px;
     height: 300px;
-    overflow: auto; /* Enable scrolling */
-    border: 1px solid black;
+    overflow: auto;
+    /* border: 1px solid black; */
+    border: none;
     padding: 10px;
-    margin: 0 auto; /* Center horizontally */
+    margin: 0 auto;
 }
 
-#parent-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center items */
-    justify-content: center; /* Center items */
-    height: 100vh;
-    width: 100vw;
+.post{
+    border: 1px solid #dddddd;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #dddddd89;
+    border-radius: 5px; /* rounded corners */
 }
 
+.post h2{
+    font-size: 20px;      
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+/* 
 #button-row {
     display: flex;
-    justify-content: center; /* Center buttons horizontally */
-    gap: 10px; /* Space between buttons */
-    margin-top: 10px; /* Space above the buttons */
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+} */
+
+.log_out {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #f08b2c;
+    border-radius: 5px; /* rounded corners */
 }
 
 body {
@@ -38,20 +45,20 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #f0f0f0; /* light gray */
+    background-color: #f0f0f0;
     height: 100vh;
 }
 
-#parent-container {
+#parent-container,
+.parent-container-class { 
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center; 
-    height: 100vh;
+    height: auto;
     width: 100vw;
 }
 
 #scrollButton {
     margin-top: auto;
 }
-

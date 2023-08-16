@@ -6,11 +6,14 @@
   <head>
     <title>Dashboard</title>
   </head>
-    <link rel="stylesheet" href="/css/styles.css">
-  </head>
   <body>
     <div id="parent-container" class="center-absolute">
-      <h1>Welcome to the ChatRoom, <%= user.username %>!</h1>
+      <h1>FSE Chat Room, <%= user.username %>!
+      <!-- Logout Button -->
+      <form action="/logout" class = "log_out" method="post">
+        <input type="submit" value="Logout">
+      </form>
+    </h1>
 
       <div id="parent-container">
         <div id="posts-container" class="scrollable-div">
@@ -30,10 +33,6 @@
         </div>
       </form>    
 
-      <!-- Logout Button -->
-      <form action="/logout" method="post">
-        <input type="submit" value="Logout">
-      </form>
     </div>
 
 
@@ -66,30 +65,19 @@
             const formattedTime = postDate.toLocaleTimeString(); // "HH:MM:SS AM/PM"
             
             // formatting the inner HTML
-            postElement.innerHTML = `<h2>${post.post_user}:</h2><p>${post.post_content}</p><p>at ${formattedDate} ${formattedTime}</p>`;
+            postElement.innerHTML = `<h2>${post.post_user}        ${formattedDate} ${formattedTime}</h2><p>${post.post_content}</p>`;
             
-            // temporarily remove the scroll button before appending the post
-            postsContainer.removeChild(scrollButton);
-            // append the post
+            // render new post
             postsContainer.appendChild(postElement);
-            // re-append the scroll button
-            postsContainer.appendChild(scrollButton);
-            
             // Add the id to the renderedPosts list
             renderedPosts.push(post.id);
           }
         });
 
+        // Automatically scroll to the bottom if a new post was added
         if (newPostAdded) {
-          // Show the "Scroll to bottom" button
-          scrollButton.style.display = 'block';
-
-          // Handle click on the "Scroll to bottom" button
-          scrollButton.addEventListener('click', function() {
-              postsContainer.scrollTop = postsContainer.scrollHeight;
-              // Hide the button after clicking
-              this.style.display = 'none';
-          });
+            const postsContainer = document.getElementById('posts-container');
+            postsContainer.scrollTop = postsContainer.scrollHeight;
         }
       }
 
