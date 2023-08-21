@@ -2,8 +2,6 @@
     width: 400px;
     height: 300px;
     overflow: auto;
-    /* border: 1px solid black; */
-    border: none;
     padding: 10px;
     margin: 0 auto;
 }
@@ -22,20 +20,34 @@
     margin-top: 0;
     margin-bottom: 10px;
 }
-/* 
-#button-row {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
-} */
 
 .log_out {
     border: 1px solid #ddd;
-    padding: 10px;
-    margin-top: 10px;
+    padding: 5px 10px;
     background-color: #f08b2c;
-    border-radius: 5px; /* rounded corners */
+    border-radius: 5px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.log_out input[type="submit"] {
+    background: none;
+    border: none;
+    color: white;
+    padding: 0;
+    cursor: pointer;
+}
+
+.submit {
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+    background-color: #f08b2c;
+    border-radius: 5px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;;
 }
 
 body {
@@ -57,8 +69,32 @@ body {
     align-items: center; 
     height: auto;
     width: 100vw;
+    background: white; /*the big white background*/
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1); /* box shadow for a subtle effect */ /*TODO Change Color Perhaps*/
+    border-radius: 10px;
+}
+
+/* Styles the FSE ChatRoom and the Logout box */
+#header-container { 
+    display: flex;
+    justify-content: center;;
+    align-items: center;
+    width: 100%;
+    gap: 20px;/*Space Beweten the logout button and the "FSE ChatRoom"*/
+    margin-bottom: 20px;
 }
 
 #scrollButton {
     margin-top: auto;
+}
+
+textarea {
+    width: 150%;
+    height: 100px;
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    border-radius: 4px; /*Round Area*/
+    justify-content: flex-start;
+    align-items: stretch;
 }

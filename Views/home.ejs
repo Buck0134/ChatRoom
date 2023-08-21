@@ -1,38 +1,33 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet"href="/css/styles.css">
-  </head>
-  <head>
+<head>
+    <link rel="stylesheet" href="/css/styles.css">
     <title>Dashboard</title>
-  </head>
-  <body>
+</head>
+<body>
     <div id="parent-container" class="center-absolute">
-      <h1>FSE Chat Room, <%= user.username %>!
-      <!-- Logout Button -->
-      <form action="/logout" class = "log_out" method="post">
-        <input type="submit" value="Logout">
-      </form>
-    </h1>
-
-      <div id="parent-container">
-        <div id="posts-container" class="scrollable-div">
-        <button id="scrollButton" style="display: none;">Scroll to Bottom</button>
-      </div>
-      </div>
-      
-
-      <!-- Posting Area -->
-      <form id="postForm" action="/posting" method="post">
-        <input type="hidden" id="post_user" value="<%= user.username %>">
-        <label for="post_content">Content:</label>
-        <input type="text" id="post_content" name="post_content" required>
-
-        <div id="button-row">
-          <button type="submit">Confirm</button>
+        <div id="header-container">
+            <h1>FSE Chat Room, <%= user.username %>!</h1>
+            <!-- Logout Button -->
+            <form action="/logout" class="log_out" method="post">
+                <input type="submit" value="Logout">
+            </form>
         </div>
-      </form>    
+        <div id="parent-container">
+            <div id="posts-container" class="scrollable-div">
+                <button id="scrollButton" style="display: none;">Scroll to Bottom</button>
+            </div>
+        </div>
 
+        <!-- Posting Area -->
+        <form id="postForm" action="/posting" method="post">
+            <input type="hidden" id="post_user" value="<%= user.username %>">
+            <!-- <label for="post_content">Content:</label> -->
+            <textarea name="post_content" id="post_content" rows="4" placeholder="Enter Your Message here" required></textarea>
+            <div id="button-row">
+                <button class="submit" type="submit">Confirm</button>
+            </div>
+        </form>
     </div>
 
 
@@ -104,7 +99,7 @@
         .then(response => response.json()) // expecting a json response
         .then(json => {console.log(json);
           document.getElementById('post_content').value = ''; // Clear the input box after the server send a confirm(or error) message
-          // Scroll to the bottom after setting
+          // Scroll to the bottom after setting, AUtoScrool which takes over the scrool button which is implemented before
           const postsContainer = document.getElementById('posts-container');
           postsContainer.scrollTop = postsContainer.scrollHeight;
         })
