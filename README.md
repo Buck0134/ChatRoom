@@ -1,4 +1,4 @@
-# FSE ChatRoom
+# FSE ChatRoom: Bucky Yu, chenkaiy@andrew.cmu.edu
 
 Please start the chatroom by using the following command:
 node app.js
